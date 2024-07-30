@@ -1,5 +1,6 @@
 /*** TO DO LIST
  *      - Add keyboard support
+ *      - Fix minor overflow bug
  * 
  ***/
 
