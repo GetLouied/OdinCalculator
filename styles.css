@@ -32,6 +32,11 @@
     text-align: right;
 }
 
+#top-container{
+    display: flex;
+    justify-content: space-between;
+}
+
 #clear {
     display: flex;
     justify-content: flex-end;

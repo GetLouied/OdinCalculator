@@ -1,8 +1,6 @@
 /*** TO DO LIST
- *      - Remeber multiple numbers typed (ie. 111111, or 567, 9834)
- *          - Currently it only takes a single digit.
  *      - Fix rounded numbers (check if float, round(7))
- *      - Add a backspace
+ *      - Add backspace functionality
  *      - Add keyboard support
  *      - Add a hard stop on length of numbers within display
  *          - (After certain length, alert user can't add more)
@@ -27,6 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const decimalButton = document.getElementById('decimal');
     const equalsButton = document.getElementById('equals');
     const clearButton = document.getElementById('clear-button');
+    const deleteButton = document.getElementById('del-button');
     const itemDisplay = document.getElementById('item-display');
 
     // Digit Dictionary
@@ -86,16 +85,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
         });
     });
-
-    
-    // Event listener for clear button
-    clearButton.addEventListener('click', () => {
-        itemDisplay.innerText = '';
-        num1 = '';
-        num2 = '';
-        operator = '';
-        isOperatorSet = false;
-    });
     
     // Equal button listener
     equalsButton.addEventListener('click', () => {
@@ -112,7 +101,23 @@ document.addEventListener('DOMContentLoaded', function() {
         
     })
 
+    // Event listener for clear button
+    clearButton.addEventListener('click', () => {
+        itemDisplay.innerText = '';
+        num1 = '';
+        num2 = '';
+        operator = '';
+        isOperatorSet = false;
+    });
+
+    // Event listener for del button
+    deleteButton.addEventListener('click', () => {
+
+    });
+
 });
+
+
 
 
 
