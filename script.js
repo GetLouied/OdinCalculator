@@ -1,10 +1,6 @@
 /*** TO DO LIST
  *      - Add keyboard support
  * 
- *   DISPLAY STYLING
- *      - Change button display
- *      - Change overall calculator display
- * 
  ***/
 
 /********************************* FUNCTION CONNECTION *************************************/
