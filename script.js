@@ -1,11 +1,5 @@
 /*** TO DO LIST
- *      - Fix rounded numbers (check if float, round(7))
- *      - Add backspace functionality
  *      - Add keyboard support
- *      - Add a hard stop on length of numbers within display
- *          - (After certain length, alert user can't add more)
- *      - Decimal operation functionality
- *   
  * 
  *   DISPLAY STYLING
  *      - Change button display
@@ -14,6 +8,8 @@
  ***/
 
 /********************************* FUNCTION CONNECTION *************************************/
+
+
 let num1 = '';
 let num2 = '';
 let operator = '';
@@ -55,6 +51,17 @@ document.addEventListener('DOMContentLoaded', function() {
         return itemDisplay.innerText.length < 8;
     }
 
+    function evaluateCurrentOperation() {
+        if (num1 && num2 && operator) {
+            const result = calculatorOperation(parseFloat(num1), parseFloat(num2), operator);
+            num1 = result.toString();
+            num2 = '';
+            operator = '';
+            isOperatorSet = false;
+            return result;
+        }
+        return parseFloat(num1);
+    }
 
     // Event listener for number button clicks
     numberButtons.forEach(button => {
@@ -71,44 +78,67 @@ document.addEventListener('DOMContentLoaded', function() {
                 } else {
                     num2 += clickedNumber;
                     itemDisplay.innerText = num2;
-                    previousItemDisplay = `${num1} ${operator} ${num2}`;
+                    previousItemDisplay.innerText = `${num1} ${operator} ${num2}`;
                 }
             }
-
         });
     });
-
 
     // Event listener for operator clicks
     operatorButtons.forEach(button => {
         button.addEventListener('click', (event) => {
             const clickedOperator = event.target.id;
-            const operatorSymbol = operatorMap[clickedOperator]
+            const operatorSymbol = operatorMap[clickedOperator];
 
-            if (num1 && clickedOperator) {
+            if (num1 && num2 && isOperatorSet) {
+                const result = evaluateCurrentOperation();
+                num1 = result.toString();
+                operator = operatorSymbol;
+                previousItemDisplay.innerText = `${num1} ${operator}`;
+                itemDisplay.innerText = '';
+                isOperatorSet = true;
+            } else if (num1 && !num2) {
                 operator = operatorSymbol;
                 isOperatorSet = true;
                 previousItemDisplay.innerText = `${num1} ${operator}`;
                 itemDisplay.innerText = '';
+            } else if (num1 && operator) {
+                const result = evaluateCurrentOperation();
+                num1 = result.toString();
+                operator = operatorSymbol;
+                previousItemDisplay.innerText = `${num1} ${operator}`;
+                itemDisplay.innerText = '';
+                isOperatorSet = true;
             }
-
         });
     });
-    
+
     // Equal button listener
     equalsButton.addEventListener('click', () => {
-        let result = calculatorOperation(Number(num1), Number(num2), operator);
-        previousItemDisplay.innerText = `${num1} ${operator} ${num2} =`;
-        itemDisplay.innerText = result.toString().slice(0, 8); 
-        num2 = '';
-        operator = '';
-        isOperatorSet = false;
-    })
+        const result = evaluateCurrentOperation();
+        if (result !== undefined) {
+            previousItemDisplay.innerText = `${num1} =`;
+            itemDisplay.innerText = result.toString().slice(0, 8);
+        }
+    });
 
     // Decimal button listener
     decimalButton.addEventListener('click', () => {
-        
-    })
+        if (!canAddCharacter()) return;
+
+        if (!isOperatorSet) {
+            if (!num1.includes('.')) {
+                num1 += '.';
+                itemDisplay.innerText = num1;
+            }
+        } else {
+            if (!num2.includes('.')) {
+                num2 += '.';
+                itemDisplay.innerText = num2;
+                previousItemDisplay.innerText = `${num1} ${operator} ${num2}`;
+            }
+        }
+    });
 
     // Event listener for clear button
     clearButton.addEventListener('click', () => {
@@ -120,7 +150,7 @@ document.addEventListener('DOMContentLoaded', function() {
         isOperatorSet = false;
     });
 
-    // Event listener for del button
+    // Event listener for delete button
     deleteButton.addEventListener('click', () => {
         if (!isOperatorSet) {
             num1 = num1.slice(0, -1);
@@ -128,64 +158,40 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             num2 = num2.slice(0, -1);
             itemDisplay.innerText = num2;
-            previousItemDisplay.innerText = `${num1} ${operator}`;
+            previousItemDisplay.innerText = `${num1} ${operator} ${num2}`;
         }
     });
 
-});
-
-
-
-
-
-
-
-
-/********************************* OPERATION FUNCTIONS ****************************/
-
-function calculatorOperation(num1, num2, operator) {
-
-    switch(operator) {
-        case '+':
-            return addNumbers(num1, num2);
-
-        case '-':
-            return substractNumbers(num1, num2);
-
-        case '*':
-            return multiplyNumbers(num1, num2);
-
-        case '/':
-            return divideNumbers(num1, num2);
-
-        default: 
-            return 0;
+    // Calculator operation functions
+    function calculatorOperation(num1, num2, operator) {
+        switch (operator) {
+            case '+':
+                return addNumbers(num1, num2);
+            case '-':
+                return subtractNumbers(num1, num2);
+            case '*':
+                return multiplyNumbers(num1, num2);
+            case '/':
+                return divideNumbers(num1, num2);
+            default:
+                return 0;
+        }
     }
 
-}
+    // Math functions
+    function addNumbers(num1, num2) {
+        return num1 + num2;
+    }
 
+    function subtractNumbers(num1, num2) {
+        return num1 - num2;
+    }
 
+    function multiplyNumbers(num1, num2) {
+        return num1 * num2;
+    }
 
-
-/********************************** MATH FUNCTIONS *******************************/
-
-// Addition
-function addNumbers(num1, num2) {
-    return num1 + num2;
-}
-
-// Subctraction
-function substractNumbers(num1, num2) {
-    return num1 - num2;
-}
-
-
-// Mulitplication
-function multiplyNumbers(num1, num2) {
-    return num1 * num2;
-}
-
-// Division 
-function divideNumbers(num1, num2) {
-    return num1 / num2
-}
+    function divideNumbers(num1, num2) {
+        return num1 / num2;
+    }
+});
