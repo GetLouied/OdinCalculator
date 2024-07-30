@@ -1,3 +1,8 @@
+body {
+    background-image: url("./images/desk.jpeg");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
 #main {
     display: flex;
     flex-direction: column;
@@ -11,18 +16,19 @@ button {
     background-color: #478CCF;
     color: lightgrey;
     padding: 20px;
-    border: onset;
+    border: 1px onset #478CCF;
     border-radius: 5px;
+    box-shadow: 2px 2px 5px black;
 }
 
 #calculator {
     display: flex;
     flex-direction: column;
-    border: 15px solid #478CCF;
+    border: 15px inset #478CCF;
     border-radius: 20px;
     padding: 12px;
     background-color: rgb(238, 237, 2);
-    box-shadow: 10px 10px 5px lightblue;
+    box-shadow: 10px 10px 20px black;
 }
 
 #screen {
@@ -32,7 +38,7 @@ button {
     background-color: lightgrey; 
     width: auto;
     height: 70px;
-    border: 1px solid grey;
+    border: 5px inset black;
     margin-bottom: 5px;
     padding-right: 10px;
     border-radius: 5px;
