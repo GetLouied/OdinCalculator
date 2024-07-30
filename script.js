@@ -29,114 +29,87 @@ document.addEventListener('DOMContentLoaded', function() {
     const clearButton = document.getElementById('clear-button');
     const itemDisplay = document.getElementById('item-display');
 
+    // Digit Dictionary
+    const digitMap = {
+        'zero': '0',
+        'one': '1',
+        'two': '2', 
+        'three': '3', 
+        'four': '4', 
+        'five': '5', 
+        'six': '6', 
+        'seven': '7',
+        'eight': '8', 
+        'nine': '9', 
+    };
+
+    // Operator Dictionary
+    const operatorMap = {
+        'add': '+',
+        'subtract': '-',
+        'multiply': '*',
+        'divide': '/'
+    };
+
 
     // Event listener for number button clicks
     numberButtons.forEach(button => {
         button.addEventListener('click', (event) => {
-            clickedNumber = event.target.id 
-    
-            switch(clickedNumber) {
-                case 'zero':
-                    itemDisplay.innerText = '0';
-                    !num1 ? num1 = 0 : num2 = 0;
-                    break;
-    
-                case 'one':
-                    itemDisplay.innerText = '1';
-                    !num1 ? num1 = 1 : num2 = 1;
-                    break;
+            const clickedId = event.target.id;
+            const clickedNumber = digitMap[clickedId];
 
-                case 'two':
-                    itemDisplay.innerText = '2';
-                    !num1 ? num1 = 2 : num2 = 2;
-                    break;
-
-                case 'three':
-                    itemDisplay.innerText = '3';
-                    !num1 ? num1 = 3 : num2 = 3;
-                    break;
-
-                case 'four':
-                    itemDisplay.innerText = '4';
-                    !num1 ? num1 = 4 : num2 = 4;
-                    break;
-
-                case 'five':
-                    itemDisplay.innerText = '5';
-                    !num1 ? num1 = 5 : num2 = 5;
-                    break;
-
-                case 'six':
-                    itemDisplay.innerText = '6';
-                    !num1 ? num1 = 6 : num2 = 6;
-                    break;
-
-                case 'seven':
-                    itemDisplay.innerText = '7';
-                    !num1 ? num1 = 7 : num2 = 7;
-                    break;
-
-                case 'eight':
-                    itemDisplay.innerText = '8';
-                    !num1 ? num1 = 8 : num2 = 8;
-                    break;
-
-                case 'nine':
-                    itemDisplay.innerText = '9';
-                    !num1 ? num1 = 9 : num2 = 9;
-                    break;
-    
+            if (clickedNumber) {
+                if (!isOperatorSet) {
+                    num1 += clickedNumber;
+                    itemDisplay.innerText = num1;
+                } else {
+                    num2 += clickedNumber;
+                    itemDisplay.innerText = `${num1} ${operator} ${num2}`;
+                }
             }
-    
+
         });
-    })
+    });
 
 
     // Event listener for operator clicks
     operatorButtons.forEach(button => {
         button.addEventListener('click', (event) => {
-            clickedOperator = event.target.id;
+            const clickedOperator = event.target.id;
+            const operatorSymbol = operatorMap[clickedOperator]
 
-            switch (clickedOperator) {
-                case 'add':
-                    itemDisplay.innerText = '+';
-                    operator = '+';
-                    break;
-                case 'subtract':
-                    itemDisplay.innerText = '-';
-                    operator = '-'
-                    break;
-                case 'multiply':
-                    itemDisplay.innerText = '*';
-                    operator = '*'
-                    break;
-                case 'divide':
-                    itemDisplay.innerText = '/';
-                    operator = '/'
-                    break;
+            if (num1 && clickedOperator) {
+                operator = operatorSymbol;
+                isOperatorSet = true;
+                itemDisplay.innerText = `${num1} ${operator}`;
             }
 
         });
     });
+
     
     // Event listener for clear button
     clearButton.addEventListener('click', () => {
         itemDisplay.innerText = '';
-        num1 = undefined;
-        num2 = undefined;
-        operator = undefined;
+        num1 = '';
+        num2 = '';
+        operator = '';
+        isOperatorSet = false;
     });
     
     // Equal button listener
     equalsButton.addEventListener('click', () => {
-        let result = calculatorOperation(num1, num2, operator);
+        let result = calculatorOperation(Number(num1), Number(num2), operator);
         itemDisplay.innerText = result;
-        num1 = result;
-    });
+        num1 = result
+        num2 = '';
+        operator = '';
+        isOperatorSet = false;
+    })
 
     // Decimal button listener
     decimalButton.addEventListener('click', () => {
-        itemDisplay.innerText = '.';
+        
     })
 
 });
@@ -150,25 +123,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function calculatorOperation(num1, num2, operator) {
 
-    num1 = Number(num1);
-    num2 = Number(num2);
-
     switch(operator) {
         case '+':
-            operator = undefined;
             return addNumbers(num1, num2);
 
         case '-':
-            operator = undefined;
             return substractNumbers(num1, num2);
 
         case '*':
-            operator = undefined;
             return multiplyNumbers(num1, num2);
 
         case '/':
-            operator = undefined;
             return divideNumbers(num1, num2);
+
+        default: 
+            return 0;
     }
 
 }
