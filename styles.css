@@ -16,10 +16,11 @@
 
 #screen {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     background-color: lightgrey; 
     width: auto;
-    height: 20px;
+    height: 30px;
     border: 1px solid grey;
     margin-bottom: 5px;
 }
@@ -30,6 +31,10 @@
     padding-right: 5px;
     padding-top: 1px;
     text-align: right;
+}
+
+#previous-item-display {
+    font-size: 10px;
 }
 
 #top-container{

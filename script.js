@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const clearButton = document.getElementById('clear-button');
     const deleteButton = document.getElementById('del-button');
     const itemDisplay = document.getElementById('item-display');
+    const previousItemDisplay = document.getElementById('previous-item-display');
 
     // Digit Dictionary
     const digitMap = {
@@ -50,10 +51,16 @@ document.addEventListener('DOMContentLoaded', function() {
         'divide': '/'
     };
 
+    function canAddCharacter() {
+        return itemDisplay.innerText.length < 8;
+    }
+
 
     // Event listener for number button clicks
     numberButtons.forEach(button => {
         button.addEventListener('click', (event) => {
+            if (!canAddCharacter()) return;
+
             const clickedId = event.target.id;
             const clickedNumber = digitMap[clickedId];
 
@@ -63,7 +70,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     itemDisplay.innerText = num1;
                 } else {
                     num2 += clickedNumber;
-                    itemDisplay.innerText = `${num1} ${operator} ${num2}`;
+                    itemDisplay.innerText = num2;
+                    previousItemDisplay = `${num1} ${operator} ${num2}`;
                 }
             }
 
@@ -80,7 +88,8 @@ document.addEventListener('DOMContentLoaded', function() {
             if (num1 && clickedOperator) {
                 operator = operatorSymbol;
                 isOperatorSet = true;
-                itemDisplay.innerText = `${num1} ${operator}`;
+                previousItemDisplay.innerText = `${num1} ${operator}`;
+                itemDisplay.innerText = '';
             }
 
         });
@@ -89,8 +98,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Equal button listener
     equalsButton.addEventListener('click', () => {
         let result = calculatorOperation(Number(num1), Number(num2), operator);
-        itemDisplay.innerText = result;
-        num1 = result
+        previousItemDisplay.innerText = `${num1} ${operator} ${num2} =`;
+        itemDisplay.innerText = result.toString().slice(0, 8); 
         num2 = '';
         operator = '';
         isOperatorSet = false;
@@ -104,6 +113,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Event listener for clear button
     clearButton.addEventListener('click', () => {
         itemDisplay.innerText = '';
+        previousItemDisplay.innerText = '';
         num1 = '';
         num2 = '';
         operator = '';
@@ -112,7 +122,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Event listener for del button
     deleteButton.addEventListener('click', () => {
-
+        if (!isOperatorSet) {
+            num1 = num1.slice(0, -1);
+            itemDisplay.innerText = num1;
+        } else {
+            num2 = num2.slice(0, -1);
+            itemDisplay.innerText = num2;
+            previousItemDisplay.innerText = `${num1} ${operator}`;
+        }
     });
 
 });
