@@ -1,6 +1,8 @@
 /*** TO DO LIST
  *      - Add keyboard support
  *      - Fix minor overflow bug
+ *      - Fix Precision & Rounding Bug
+ *      - Add a user alert and message for dealing with division by 0
  * 
  ***/
 
